@@ -1,9 +1,12 @@
 package br.com.fiap.view;
 
+import br.com.fiap.ClienteNaoEncontrado;
 import br.com.fiap.dao.ClienteDao;
 import br.com.fiap.model.Cliente;
+import br.com.fiap.service.ClienteService;
 import br.com.fiap.service.MenuService;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
@@ -38,7 +41,27 @@ public class Main {
                         }
                         break;
                     case 2:
-                        System.out.println("Entrei no case 2");
+                        try{
+                            System.out.println("Listar Clientes!");
+                            ClienteDao dao = new ClienteDao();
+                            System.out.println(ClienteService.imprimirListaCliente(dao.buscarClientes()));
+                        } catch (Exception e) {
+                            throw new RuntimeException(e);
+                        }
+                        break;
+                    case 3:
+                        try{
+                            System.out.println("Buscar cliente por ID ");
+                            System.out.println("Digite um id ");
+                            int codigoDigitado = sc.nextInt();
+                            ClienteDao dao = new ClienteDao();
+                            System.out.println(ClienteService.imprimirClientePorId(dao.buscarClientePorId(codigoDigitado)));
+                        }catch (ClienteNaoEncontrado e){
+                            System.out.println(e.getMessage());
+                            break;
+                        } catch (SQLException e) {
+                            throw new RuntimeException(e);
+                        }
                         break;
                     case 9:
                         pararProgama = 0;
